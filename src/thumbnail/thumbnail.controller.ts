@@ -1,12 +1,29 @@
-import { Controller, Get, Query, Param } from '@nestjs/common';
-import { AssetService } from 'src/asset/asset.service';
-import { ThumbnailOptions } from 'src/asset/asset.dto';
+import {
+  Controller,
+  Get,
+  Query,
+  Param,
+  DefaultValuePipe,
+  ParseIntPipe,
+  Redirect,
+} from '@nestjs/common';
+
+import { ThumbnailService } from 'src/thumbnail/thumbnail.service';
 
 @Controller('asset/:id')
 export class ThumbnailController {
-  constructor(private readonly assetService: AssetService) {}
+  constructor(private readonly thumbnailService: ThumbnailService) {}
   @Get('thumbnail')
-  getThumbnail(@Param() params, @Query() options: ThumbnailOptions) {
-    return this.assetService.getThumbnail(params.id, options);
+  @Redirect()
+  async getThumbnail(
+    @Param() params,
+    @Query('w', new DefaultValuePipe(1000), ParseIntPipe) w: number,
+    @Query('h', new DefaultValuePipe(1000), ParseIntPipe) h: number,
+  ) {
+    const url = await this.thumbnailService.getThumbnail(params.id, { w, h });
+    return {
+      url,
+      statusCode: 302,
+    };
   }
 }

@@ -1,7 +1,7 @@
 import { Logger } from 'nestjs-pino';
 import { v4 } from 'uuid';
 import { Injectable } from '@nestjs/common';
-import { CreateAssetDto, ThumbnailOptions } from './asset.dto';
+import { CreateAssetDto } from './asset.dto';
 import Asset from './asset.model';
 import mapper from 'src/utils/mapper';
 import { moveUpload } from 'src/utils/S3';
@@ -34,9 +34,5 @@ export class AssetService {
       }),
     );
     return asset;
-  }
-
-  getThumbnail(id: string, options: ThumbnailOptions) {
-    console.log(id, options);
   }
 }

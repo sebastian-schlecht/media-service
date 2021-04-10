@@ -9,6 +9,8 @@ const {
   S3_BUCKET_NAME_CACHE,
 } = process.env;
 
+export const MAX_EXPIRY_TIME = 604800; // 7 days in seconds
+
 export async function getUploadUrl() {
   const key = v4();
   const expires = 24 * 3600; // 86400
@@ -31,6 +33,39 @@ export async function cachedFileExists(key: string) {
     return false;
   }
   return true;
+}
+
+export async function uploadCachedFile(
+  key: string,
+  buffer: Buffer,
+  contentType: string,
+) {
+  return client
+    .putObject({
+      Bucket: S3_BUCKET_NAME_CACHE,
+      Key: key,
+      Body: buffer,
+      ContentType: contentType,
+    })
+    .promise();
+}
+
+export async function getCachedSignedUrl(key: string) {
+  return client.getSignedUrl('getObject', {
+    Bucket: S3_BUCKET_NAME_CACHE,
+    Key: key,
+    Expires: MAX_EXPIRY_TIME,
+    ResponseContentDisposition: 'inline',
+  });
+}
+
+export async function getAsset(key: string) {
+  return client
+    .getObject({
+      Bucket: S3_BUCKET_NAME_ASSETS,
+      Key: key,
+    })
+    .promise();
 }
 
 export async function moveUpload(uploadKey: string) {
