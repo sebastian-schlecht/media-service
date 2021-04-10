@@ -4,10 +4,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AssetController } from './asset/asset.controller';
 import { AssetService } from './asset/asset.service';
+import { UploadController } from './upload/upload.controller';
+import { UploadService } from './upload/upload.service';
 
 @Module({
   imports: [LoggerModule.forRoot()],
-  controllers: [AppController, AssetController],
-  providers: [AppService, AssetService],
+  controllers: [AppController, AssetController, UploadController],
+  providers: [AppService, AssetService, UploadService],
 })
 export class AppModule {}

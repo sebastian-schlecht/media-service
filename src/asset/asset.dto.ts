@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateAssetDto {
   @IsNotEmpty()
@@ -6,10 +6,22 @@ export class CreateAssetDto {
   prefix: string;
 
   @IsNotEmpty()
+  @IsUUID()
+  creatorId: string;
+
+  @IsNotEmpty()
   @IsString()
   name: string;
+
+  @IsString()
+  caption?: string;
 
   @IsNotEmpty()
   @IsString()
   uploadKey: string;
+}
+
+export class UpdateAssetDto {
+  @IsString()
+  caption?: string;
 }

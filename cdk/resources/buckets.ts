@@ -3,9 +3,9 @@ import { Duration, RemovalPolicy } from '@aws-cdk/core';
 
 import { stack } from '../stack';
 
-export const mediaBucket = new Bucket(
+export const assetsBucket = new Bucket(
   stack,
-  `${stack.stackName}-media-bucket`,
+  `${stack.stackName}-assets-bucket`,
   {
     versioned: true,
     /**
