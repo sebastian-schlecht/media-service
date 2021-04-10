@@ -1,7 +1,7 @@
-import { RestApi } from '@aws-cdk/aws-apigateway';
+import { LambdaRestApi } from '@aws-cdk/aws-apigateway';
+import { handler } from '../functions/http';
 import { stack } from '../stack';
 
-export const restApi = new RestApi(stack, 'rest-api', {
-  endpointExportName: `${stack.stackName}-rest-api-url`,
-  restApiName: `${stack.stackName}-rest-api`,
+export const restApi = new LambdaRestApi(stack, 'rest-api', {
+  handler,
 });

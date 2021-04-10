@@ -2,7 +2,7 @@ import { Code, Function, Runtime } from '@aws-cdk/aws-lambda';
 import { Duration } from '@aws-cdk/core';
 import { stack } from '../stack';
 
-export const http = new Function(stack, 'function-http', {
+export const handler = new Function(stack, 'function-http', {
   code: Code.fromAsset('./dist'),
   functionName: `${stack.stackName}-http`,
   handler: 'serverless.default',
