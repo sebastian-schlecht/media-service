@@ -1,5 +1,6 @@
 import { Code, Function, Runtime } from '@aws-cdk/aws-lambda';
 import { Duration } from '@aws-cdk/core';
+import { assetsTable } from '../resources/table';
 import { stack } from '../stack';
 
 export const handler = new Function(stack, 'function-http', {
@@ -10,4 +11,7 @@ export const handler = new Function(stack, 'function-http', {
   memorySize: 1024,
   runtime: Runtime.NODEJS_12_X,
   timeout: Duration.seconds(30),
+  environment: {
+    DDB_TABLE_NAME_ASSETS: assetsTable.tableName,
+  },
 });

@@ -1,7 +1,9 @@
-import { LambdaIntegration } from '@aws-cdk/aws-apigateway';
-
 import { app } from './stack';
+
+import { assetsTable } from './resources/table';
+import { handler } from './functions/http';
 import './resources/api';
-import './functions/http';
+
+assetsTable.grantReadWriteData(handler);
 
 app.synth();
