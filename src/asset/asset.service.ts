@@ -1,7 +1,7 @@
 import { Logger } from 'nestjs-pino';
 import { v4 } from 'uuid';
 import { Injectable } from '@nestjs/common';
-import { CreateAssetDto } from './asset.dto';
+import { CreateAssetDto, ThumbnailOptions } from './asset.dto';
 import Asset from './asset.model';
 import mapper from 'src/utils/mapper';
 import { moveUpload } from 'src/utils/S3';
@@ -20,18 +20,6 @@ export class AssetService {
     const now = new Date().toISOString();
     const { key, contentType } = await moveUpload(uploadKey);
 
-    console.log({
-      id,
-      prefix,
-      creatorId,
-      key,
-      name,
-      contentType,
-      serverCreatedAt: now,
-      serverUpdatedAt: now,
-      serverDeletedAt: now,
-      caption,
-    });
     const asset = await mapper.put(
       Object.assign(new Asset(), {
         id,
@@ -46,5 +34,9 @@ export class AssetService {
       }),
     );
     return asset;
+  }
+
+  getThumbnail(id: string, options: ThumbnailOptions) {
+    console.log(id, options);
   }
 }

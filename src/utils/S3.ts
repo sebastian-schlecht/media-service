@@ -3,7 +3,11 @@ import { v4 } from 'uuid';
 
 const client = new S3();
 
-const { S3_BUCKET_NAME_UPLOADS, S3_BUCKET_NAME_ASSETS } = process.env;
+const {
+  S3_BUCKET_NAME_UPLOADS,
+  S3_BUCKET_NAME_ASSETS,
+  S3_BUCKET_NAME_CACHE,
+} = process.env;
 
 export async function getUploadUrl() {
   const key = v4();
@@ -16,6 +20,17 @@ export async function getUploadUrl() {
   });
 
   return { url, key, expires };
+}
+
+export async function cachedFileExists(key: string) {
+  try {
+    await client
+      .headObject({ Bucket: S3_BUCKET_NAME_CACHE, Key: key })
+      .promise();
+  } catch (error) {
+    return false;
+  }
+  return true;
 }
 
 export async function moveUpload(uploadKey: string) {

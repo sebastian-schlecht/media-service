@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, IsNumber } from 'class-validator';
 
 export class CreateAssetDto {
   @IsNotEmpty()
@@ -24,4 +24,12 @@ export class CreateAssetDto {
 export class UpdateAssetDto {
   @IsString()
   caption?: string;
+}
+
+export class ThumbnailOptions {
+  @IsNumber()
+  w: number;
+
+  @IsNumber()
+  h: number;
 }
