@@ -1,5 +1,6 @@
 import * as sha256 from 'crypto-js/sha256';
 import * as sharp from 'sharp';
+import { FitEnum } from 'sharp';
 import { Injectable } from '@nestjs/common';
 import { ThumbnailOptions } from 'src/thumbnail/thumbnail.interface';
 import {
@@ -12,10 +13,8 @@ import {
 @Injectable()
 export class ThumbnailService {
   async getThumbnail(id: string, options: ThumbnailOptions) {
-    const { w, h } = options;
+    const { w, h, fit } = options;
     const hash = sha256(`${id}-${w}-${h}`).toString();
-
-    console.log('hash', hash);
     const exists = await cachedFileExists(hash);
 
     if (exists) {
@@ -24,7 +23,7 @@ export class ThumbnailService {
     const response = await getAsset(id);
 
     const buffer = await sharp(Buffer.from(response.Body))
-      .resize(w, h)
+      .resize(w, h, { fit: fit as keyof FitEnum })
       .jpeg()
       .toBuffer();
 
