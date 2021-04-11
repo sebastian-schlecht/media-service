@@ -1,26 +1,19 @@
-import { Logger } from 'nestjs-pino';
 import { v4 } from 'uuid';
 import { Injectable } from '@nestjs/common';
-import { CreateAssetDto } from './asset.dto';
+import { CreateAssetDto, UpdateAssetDto } from './asset.dto';
 import Asset from './asset.model';
-import mapper from 'src/utils/mapper';
-import { moveUpload } from 'src/utils/S3';
+import mapper from '../utils/mapper';
+import { moveUpload } from '../utils/S3';
 
 @Injectable()
 export class AssetService {
-  constructor(private readonly logger: Logger) {}
   async getAsset(id: string) {
-    const keyCondition = {
-      id,
-    };
-
-    const result = await mapper.query(Asset, keyCondition).pages();
-    for await (const page of result) {
-      if (page.length) {
-        return page[0];
-      }
-    }
-    return null;
+    const item = await mapper.get(
+      Object.assign(new Asset(), {
+        id,
+      }),
+    );
+    return item;
   }
 
   async createAsset(createAssetDto: CreateAssetDto) {
@@ -44,6 +37,18 @@ export class AssetService {
       }),
     );
     return asset;
+  }
+
+  async updateAsset(id: string, updateAssetDto: UpdateAssetDto) {
+    const { caption } = updateAssetDto;
+    const item = await mapper.get(
+      Object.assign(new Asset(), {
+        id,
+      }),
+    );
+
+    Object.assign(item, { caption });
+    await mapper.update(item);
   }
 
   async deleteAsset(id: string) {
