@@ -9,8 +9,18 @@ import { moveUpload } from 'src/utils/S3';
 @Injectable()
 export class AssetService {
   constructor(private readonly logger: Logger) {}
-  getAsset(id: string) {
-    return { foo: id };
+  async getAsset(id: string) {
+    const keyCondition = {
+      id,
+    };
+
+    const result = await mapper.query(Asset, keyCondition).pages();
+    for await (const page of result) {
+      if (page.length) {
+        return page[0];
+      }
+    }
+    return null;
   }
 
   async createAsset(createAssetDto: CreateAssetDto) {
