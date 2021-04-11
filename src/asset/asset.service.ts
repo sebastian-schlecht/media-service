@@ -45,4 +45,8 @@ export class AssetService {
     );
     return asset;
   }
+
+  async deleteAsset(id: string) {
+    await mapper.delete(Object.assign(new Asset(), { id }));
+  }
 }

@@ -28,9 +28,6 @@ export default class Asset {
   public serverCreatedAt: string;
 
   @attribute()
-  public serverDeletedAt?: string | null;
-
-  @attribute()
   public serverUpdatedAt: string;
 
   @attribute()

@@ -9,7 +9,7 @@ export const handler = new Function(stack, 'function-http', {
   functionName: `${stack.stackName}-http`,
   handler: 'serverless.default',
   logRetention: 7,
-  memorySize: 1024,
+  memorySize: 1536,
   runtime: Runtime.NODEJS_12_X,
   timeout: Duration.seconds(30),
   environment: {

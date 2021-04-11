@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { CreateAssetDto } from './asset.dto';
 import { AssetService } from './asset.service';
 
@@ -8,6 +8,11 @@ export class AssetController {
   @Get(':id')
   getAsset(@Param() params) {
     return this.assetService.getAsset(params.id);
+  }
+
+  @Delete(':id')
+  deleteAsset(@Param() params) {
+    return this.assetService.deleteAsset(params.id);
   }
 
   @Post()
